@@ -41,6 +41,7 @@ class ParametersPermitTest < ActiveSupport::TestCase
     values += [Date.today, Time.now, DateTime.now]
     values += [STDOUT, StringIO.new, ActionDispatch::Http::UploadedFile.new(tempfile: __FILE__),
       Rack::Test::UploadedFile.new(__FILE__)]
+    values += [1..10]
 
     values.each do |value|
       params = ActionController::Parameters.new(id: value)
@@ -285,5 +286,11 @@ class ParametersPermitTest < ActiveSupport::TestCase
     assert @params.to_h.is_a? Hash
     assert_not @params.to_h.is_a? ActionController::Parameters
     assert_equal @params.to_hash, @params.to_unsafe_h
+  end
+
+  test "range parameters" do
+    params = ActionController::Parameters.new ids: '1..10,5,18'
+    permitted = params.permit ids: 1..10
+    assert_filtered_out permitted, :ids
   end
 end
