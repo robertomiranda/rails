@@ -1356,8 +1356,6 @@ module ActionDispatch
 
             concerns(options[:concerns]) if options[:concerns]
 
-            set_member_mappings_for_resource
-
             collection do
               actions = parent_resource.actions
               (options[:constraints] ||= {}).merge! ids: /(?:[^\.\/\?]|\.\.)+/ if parent_resource.collection_routing?
@@ -1374,6 +1372,8 @@ module ActionDispatch
             new do
               get :new
             end if parent_resource.actions.include?(:new)
+
+            set_member_mappings_for_resource
           end
 
           self
