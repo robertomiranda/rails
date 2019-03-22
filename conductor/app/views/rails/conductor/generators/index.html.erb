@@ -1,0 +1,14 @@
+<h1>Generators</h1>
+
+<ul>
+  <% @generators.each do |module_name, generator_names| %>
+    <li><%= module_name.capitalize %></li>
+
+    <ul>
+      <% generator_names.each do |generator| %>
+        <li><%= link_to generator, main_app.rails_conductor_generators_path + "/#{module_name}:#{generator}" %></li>
+      <% end%>
+    </ul>
+
+  <% end %>
+</ul>
